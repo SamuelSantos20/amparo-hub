@@ -1,13 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
-# extrato_supabase_mock.py
-# Versão de TESTE com API simulada (mockada).
-# Usa os mesmos dados fictícios no formato exato que a API real retornaria.
-# Útil para testar o fluxo completo (gravação no Supabase) sem acesso ao servidor de telefonia.
-#
-
 import os
 import sys
 import random
@@ -19,9 +12,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# ----------------------------------------------------------------
-# CONFIGURAÇÃO DO BANCO (igual ao script real)
-# ----------------------------------------------------------------
+# CONFIGURAÇÃO DO BANCO
 DB_CONFIG = {
     "host":     os.getenv("DB_HOST"),
     "port":     os.getenv("DB_PORT", "5432"),
@@ -32,9 +23,7 @@ DB_CONFIG = {
 
 TABELA = "chamadas"
 
-# ----------------------------------------------------------------
 # DADOS FICTÍCIOS PARA SIMULAR A API
-# ----------------------------------------------------------------
 FILAS = {
     "1": "Suporte Técnico",
     "2": "Vendas",
@@ -141,9 +130,7 @@ def simular_api(data_ref):
     return {"status": 0, "csv": csv_data}
 
 
-# ----------------------------------------------------------------
-# FUNÇÕES DE CONVERSÃO (igual ao script real)
-# ----------------------------------------------------------------
+# FUNÇÕES DE CONVERSÃO
 def to_str(valor):
     if valor is None:
         return None
@@ -168,9 +155,8 @@ def to_datetime_str(valor):
     return str(valor).strip()
 
 
-# ----------------------------------------------------------------
-# MAPEAMENTO DE COLUNAS E SQL DE UPSERT (igual ao script real)
-# ----------------------------------------------------------------
+# MAPEAMENTO DE COLUNAS E SQL DE UPSERT
+
 COLUNAS = [
     "id", "protocolo", "callerid", "dt_up_cliente", "colaborador_up_cliente",
     "ramal_up_cliente", "date_evento", "event", "queue_id", "queue",
@@ -233,9 +219,8 @@ def salvar_registros(cursor, payload):
     return len(linhas)
 
 
-# ----------------------------------------------------------------
 # LÓGICA PRINCIPAL
-# ----------------------------------------------------------------
+
 def obter_data_inicial():
     if len(sys.argv) > 1 and sys.argv[1].strip():
         try:

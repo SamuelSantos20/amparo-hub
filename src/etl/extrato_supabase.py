@@ -1,11 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-#
-# Adaptado para PostgreSQL/Supabase a partir do extrato.py original (MySQL)
-# Credenciais movidas para variáveis de ambiente (.env) por segurança.
-#
-
 import os
 import sys
 from datetime import datetime, date, timedelta
@@ -18,9 +13,7 @@ from dotenv import load_dotenv
 
 load_dotenv()  # carrega variáveis do arquivo .env
 
-# ----------------------------------------------------------------
-# CONFIGURAÇÃO via variáveis de ambiente (nunca hardcoded no código)
-# ----------------------------------------------------------------
+# CONFIGURAÇÃO via variáveis de ambiente
 API_URL = os.getenv("API_URL", "http://177.69.231.91/agi_lab/app.php")
 API_USER = os.getenv("API_USER")
 API_PWD = os.getenv("API_PWD")
@@ -73,7 +66,7 @@ def obter_data_inicial():
     if len(sys.argv) > 1 and sys.argv[1].strip():
         return validar_data_entrada(sys.argv[1].strip())
     # Padrão: dia anterior (recomendação da operadora de telefonia,
-    # conforme descrito pelo Kauã - evita sobrecarga no servidor de origem)
+    # evita sobrecarga no servidor de origem)
     return date.today() - timedelta(days=1)
 
 

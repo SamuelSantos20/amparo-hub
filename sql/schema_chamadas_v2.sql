@@ -1,9 +1,3 @@
--- ============================================================
--- amparo-hub | Tabela: chamadas (v2 - baseada na API real)
--- Campos extraídos do script extrato.py (sistema de telefonia)
--- ============================================================
-
--- Remove a tabela antiga (protótipo fictício) se existir
 DROP TABLE IF EXISTS chamadas_old;
 ALTER TABLE IF EXISTS chamadas RENAME TO chamadas_old;
 
@@ -27,8 +21,8 @@ CREATE TABLE chamadas (
     connect                 INT DEFAULT 0,
     nota_avaliacao          VARCHAR(255),
     tabulacao_fila          VARCHAR(255),
-    tme                     VARCHAR(50),  -- Tempo Médio de Espera
-    tma                     VARCHAR(50),  -- Tempo Médio de Atendimento
+    tme                     VARCHAR(50),
+    tma                     VARCHAR(50),
     sla                     VARCHAR(50),
     sla_p                   VARCHAR(50),
     all_call                VARCHAR(50),
@@ -37,7 +31,6 @@ CREATE TABLE chamadas (
     created_at              TIMESTAMPTZ DEFAULT now()
 );
 
--- Índices para acelerar os filtros e agregações do dashboard
 CREATE INDEX idx_chamadas_date_evento ON chamadas(date_evento);
 CREATE INDEX idx_chamadas_protocolo   ON chamadas(protocolo);
 CREATE INDEX idx_chamadas_callerid    ON chamadas(callerid);
