@@ -1,0 +1,58 @@
+name: Execucao Diaria do Extrato
+
+on:
+  # Execucao automatica pausada temporariamente para evitar insercao diaria no banco.
+  # Para reativar, restaure o schedule:
+  # schedule:
+  #   - cron: '0 5 * * *'   # 05:00 UTC = 02:00 horario de Brasilia
+  workflow_dispatch:
+    inputs:
+      modo:
+        description: 'Rodar em modo mock (teste) ou real?'
+        required: true
+        default: 'mock'
+        type: choice
+        options:
+          - mock
+          - real
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    concurrency:
+      group: extrato-diario
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Instalar Python e dependências
+        run: uv sync
+
+      - name: Rodar script
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          API_USER: ${{ secrets.API_USER }}
+          API_PWD: ${{ secrets.API_PWD }}
+          API_APP: ${{ secrets.API_APP }}
+          API_INTERVALO: ${{ secrets.API_INTERVALO }}
+          API_KEY_AGENTS: ${{ secrets.API_KEY_AGENTS }}
+          API_KEY_QUEUES: ${{ secrets.API_KEY_QUEUES }}
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+        run: |
+          set -euo pipefail
+          MODO="${{ github.event.inputs.modo || 'mock' }}"
+          echo "Modo de execucao: ${MODO}"
+
+          if [ "${MODO}" = "mock" ]; then
+            uv run python src/etl/extrato_supabase_mock.py
+          else
+            uv run python src/etl/extrato_supabase.py
+          fi
