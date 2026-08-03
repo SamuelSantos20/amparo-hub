@@ -36,20 +36,13 @@ Pipeline demonstrativo em Python para extrair registros de chamadas de uma API, 
 │   ├── extrato_supabase.py
 │   └── extrato_supabase_mock.py
 ├── tests/test_extrato.py
-├── .env.example
 ├── pyproject.toml
 └── requirements.txt
 ```
 
 ## Configuração
 
-Copie o arquivo de exemplo e preencha apenas com credenciais próprias e autorizadas:
-
-```bash
-cp .env.example .env
-```
-
-Variáveis necessárias para o modo real:
+Crie um arquivo `.env` local na raiz do projeto e preencha apenas com credenciais próprias e autorizadas:
 
 ```env
 API_URL=https://api.exemplo.com/extrato
